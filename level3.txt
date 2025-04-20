@@ -1,0 +1,13 @@
+(0,0)->(11,2);(11,2)->(0,0)
+OY T    $ Y$Y|
+ X          Y|
+  T # T   $O |
+ T       T  T|
+#Y   #  TT# T|
+Y T $    Y ##|
+      Y T $  |
+TT   Y  Y#Y T|
+ $ #    # $T |
+  $ # Y   T  |
+T    T     P#|
+  Y $  Y T  Y|
