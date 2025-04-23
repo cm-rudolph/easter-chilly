@@ -69,12 +69,4 @@ class EdgeVisitingNode extends Node {
     public void undoMoveLeft() {
         leftVisited = false;
     }
-
-    @Override
-    protected void doReset() {
-        upVisited = false;
-        rightVisited = false;
-        downVisited = false;
-        leftVisited = false;
-    }
 }

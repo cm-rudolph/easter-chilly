@@ -19,12 +19,10 @@ public abstract class Node {
     private GraphCoordinates coinDown;
     protected Node left;
     private GraphCoordinates coinLeft;
-    private String path;
 
     protected Node(int x, int y) {
         this.x = x;
         this.y = y;
-        reset();
     }
 
     public abstract boolean canMoveUp();
@@ -50,17 +48,6 @@ public abstract class Node {
     public abstract void undoMoveDown();
 
     public abstract void undoMoveLeft();
-
-    void reset() {
-        path = "";
-        doReset();
-    }
-
-    protected abstract void doReset();
-
-    public String getDescription() {
-        return String.format("(%d,%d)", x, y);
-    }
 
     @Override
     public boolean equals(Object o) {

@@ -29,7 +29,7 @@ public class GraphCreator {
 
         if (board.canMoveRight(x, y)) {
             Coordinates coordinates = board.moveRight(x, y);
-            Node node = createOrGet(board, graph, coordinates);
+            Node node = createOrGet(graph, coordinates);
             board.coinAtMoveRight(x, y)
                     .ifPresent(c -> currentNode.setCoinRight(mapCoordinates(c)));
             currentNode.setRight(node);
@@ -40,7 +40,7 @@ public class GraphCreator {
 
         if (board.canMoveLeft(x, y)) {
             Coordinates coordinates = board.moveLeft(x, y);
-            Node node = createOrGet(board, graph, coordinates);
+            Node node = createOrGet(graph, coordinates);
             board.coinAtMoveLeft(x, y)
                     .ifPresent(c -> currentNode.setCoinLeft(mapCoordinates(c)));
             currentNode.setLeft(node);
@@ -51,7 +51,7 @@ public class GraphCreator {
 
         if (board.canMoveUp(x, y)) {
             Coordinates coordinates = board.moveUp(x, y);
-            Node node = createOrGet(board, graph, coordinates);
+            Node node = createOrGet(graph, coordinates);
             board.coinAtMoveUp(x, y)
                     .ifPresent(c -> currentNode.setCoinUp(mapCoordinates(c)));
             currentNode.setUp(node);
@@ -62,7 +62,7 @@ public class GraphCreator {
 
         if (board.canMoveDown(x, y)) {
             Coordinates coordinates = board.moveDown(x, y);
-            Node node = createOrGet(board, graph, coordinates);
+            Node node = createOrGet(graph, coordinates);
             board.coinAtMoveDown(x, y)
                     .ifPresent(c -> currentNode.setCoinDown(mapCoordinates(c)));
             currentNode.setDown(node);
@@ -76,14 +76,10 @@ public class GraphCreator {
         return new GraphCoordinates(coin.x(), coin.y());
     }
 
-    private Node createOrGet(Board board, Graph graph, Coordinates target) {
+    private Node createOrGet(Graph graph, Coordinates target) {
         Node node = graph.getNodeAt(target.x(), target.y());
         if (node == null) {
-            if (board.isWormhole(target.x(), target.y())) {
-                return nodeFactory.createWormholeNode(target.x(), target.y());
-            } else {
-                return nodeFactory.createNode(target.x(), target.y());
-            }
+            return nodeFactory.createNode(target.x(), target.y());
         }
         return node;
     }

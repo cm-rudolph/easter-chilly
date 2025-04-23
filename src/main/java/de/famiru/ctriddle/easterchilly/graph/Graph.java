@@ -1,9 +1,7 @@
 package de.famiru.ctriddle.easterchilly.graph;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 public class Graph {
     private final Map<GraphCoordinates, Node> nodes = new HashMap<>();
@@ -56,15 +54,4 @@ public class Graph {
                 .allMatch(Boolean::booleanValue);
     }
 
-    public Collection<Node> getAllNodes() {
-        return nodes.values();
-    }
-
-    public void reset() {
-        nodes.values()
-                .forEach(Node::reset);
-        for (GraphCoordinates coordinates : Set.copyOf(collectedCoins.keySet())) {
-            collectedCoins.put(coordinates, false);
-        }
-    }
 }

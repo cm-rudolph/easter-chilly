@@ -1,12 +1,10 @@
 package de.famiru.ctriddle.easterchilly.graph;
 
 class NodeVisitingNode extends Node {
-    private final boolean wormholeNode;
     private boolean visited;
 
-    NodeVisitingNode(int x, int y, boolean isWormholeNode) {
+    NodeVisitingNode(int x, int y) {
         super(x, y);
-        this.wormholeNode = isWormholeNode;
     }
 
     @Override
@@ -77,7 +75,7 @@ class NodeVisitingNode extends Node {
     }
 
     private void visit(Node node) {
-        if (node instanceof NodeVisitingNode castedNode /*&& !castedNode.wormholeNode*/) {
+        if (node instanceof NodeVisitingNode castedNode) {
             castedNode.visited = true;
         }
     }
@@ -86,10 +84,5 @@ class NodeVisitingNode extends Node {
         if (node instanceof NodeVisitingNode castedNode) {
             castedNode.visited = false;
         }
-    }
-
-    @Override
-    protected void doReset() {
-        visited = false;
     }
 }
