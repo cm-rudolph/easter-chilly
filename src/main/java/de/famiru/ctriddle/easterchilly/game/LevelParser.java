@@ -42,7 +42,7 @@ class LevelParser {
 
     private Map<Coordinates, Coordinates> parseWormholes(String wormholes) {
         Map<Coordinates, Coordinates> result = new HashMap<>();
-        Pattern pattern = Pattern.compile("\\(([1-9][0-9]*),([1-9][0-9]*)\\)->\\(([1-9][0-9]*),([1-9][0-9]*)\\);?");
+        Pattern pattern = Pattern.compile("\\(([0-9]*),([0-9]*)\\)->\\(([0-9]*),([0-9]*)\\);?");
         Matcher matcher = pattern.matcher(wormholes);
         while (matcher.find()) {
             Coordinates start = new Coordinates(Integer.parseInt(matcher.group(1)), Integer.parseInt(matcher.group(2)));

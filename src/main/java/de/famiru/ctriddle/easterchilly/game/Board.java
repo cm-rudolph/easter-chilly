@@ -48,7 +48,7 @@ public class Board {
 
     public Coordinates moveUp(int playerX, int playerY) {
         int y = playerY + height;
-        while (canMoveUp(playerX, y)) {
+        while (canMoveUp(playerX, y) && getAt(playerX, y) != FieldValue.EXIT) {
             y--;
             if (isWormholeAt(playerX, y)) {
                 return getWormholeTarget(playerX, y);
@@ -59,7 +59,7 @@ public class Board {
 
     public Coordinates moveDown(int playerX, int playerY) {
         int y = playerY;
-        while (canMoveDown(playerX, y)) {
+        while (canMoveDown(playerX, y) && getAt(playerX, y) != FieldValue.EXIT) {
             y++;
             if (isWormholeAt(playerX, y)) {
                 return getWormholeTarget(playerX, y);
@@ -70,7 +70,7 @@ public class Board {
 
     public Coordinates moveLeft(int playerX, int playerY) {
         int x = playerX + width;
-        while (canMoveLeft(x, playerY)) {
+        while (canMoveLeft(x, playerY) && getAt(x, playerY) != FieldValue.EXIT) {
             x--;
             if (isWormholeAt(x, playerY)) {
                 return getWormholeTarget(x, playerY);
@@ -81,7 +81,7 @@ public class Board {
 
     public Coordinates moveRight(int playerX, int playerY) {
         int x = playerX;
-        while (canMoveRight(x, playerY)) {
+        while (canMoveRight(x, playerY) && getAt(x, playerY) != FieldValue.EXIT) {
             x++;
             if (isWormholeAt(x, playerY)) {
                 return getWormholeTarget(x, playerY);
@@ -171,5 +171,9 @@ public class Board {
             }
         }
         throw new IllegalArgumentException("The board doesn't have any exit.");
+    }
+
+    public boolean isWormhole(int x, int y) {
+        return getAt(x, y) == FieldValue.HOLE;
     }
 }

@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 class LevelValidityChecker {
     private static final Set<Character> VALID_CHARS;
     private static final Pattern WORMHOLES_PATTERN =
-            Pattern.compile("(\\([1-9][0-9]*,[1-9][0-9]*\\)->\\([1-9][0-9]*,[1-9][0-9]*\\);?)+");
+            Pattern.compile("(\\([0-9]+,[0-9]+\\)->\\([0-9]+,[0-9]+\\);?)+");
 
     static {
         String validCharString = " .#YTXP$GO";
