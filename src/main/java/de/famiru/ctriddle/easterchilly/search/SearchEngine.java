@@ -8,29 +8,39 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class SearchEngine {
     private static final Logger LOGGER = LogManager.getLogger(SearchEngine.class);
 
-    public String findLongestPath(Graph graph, int x, int y) {
-        List<Character> path = new ArrayList<>();
-        AtomicReference<String> result = new AtomicReference<>("");
-        doFindLongestPath(graph, graph.getNodeAt(x, y), 0, 0, path, result);
-        return result.get();
+    private final Graph graph;
+    private final PuzzleUnsolvableChecker puzzleUnsolvableChecker;
+    private String result = "";
+    private int maxDepthSoFar = 0;
+    private long steps = 0;
+    private boolean currentlyUnsolvable = false;
+
+    public SearchEngine(Graph graph) {
+        this.graph = graph;
+        this.puzzleUnsolvableChecker = new PuzzleUnsolvableChecker();
     }
 
-    private int doFindLongestPath(Graph graph, Node node, int maxDepthSoFar, int currentDepth, List<Character> path,
-                                  AtomicReference<String> result) {
+    public String findLongestPath(int x, int y) {
+        List<Character> path = new ArrayList<>();
+        doFindLongestPath(graph.getNodeAt(x, y), 0, path);
+        LOGGER.info("Internal steps: {}", steps);
+        return result;
+    }
+
+    private int doFindLongestPath(Node node, int currentDepth, List<Character> path) {
         if (node == null) {
             return currentDepth;
         }
         if (node == graph.getExitNode()) {
             if (graph.allCoinsVisited()) {
                 if (maxDepthSoFar < currentDepth) {
-                    LOGGER.debug("New maximum depth: {}", currentDepth);
-                    result.set(convertPath(path).substring(0, currentDepth));
-                    LOGGER.debug("Path: {}", result.get());
+                    LOGGER.debug("New maximum depth: {}, {} steps so far", currentDepth, steps);
+                    result = convertPath(path).substring(0, currentDepth);
+                    LOGGER.debug("Path: {}", result);
                 }
                 return currentDepth;
             } else {
@@ -39,16 +49,30 @@ public class SearchEngine {
         }
         if (currentDepth == path.size()) path.add(' ');
 
+        steps++;
+        if ((steps & 0x8FFL) == 0) {
+            currentlyUnsolvable = puzzleUnsolvableChecker.isPuzzleUnsolvable(graph, node);
+        }
+        if (currentlyUnsolvable) {
+            return maxDepthSoFar;
+        }
+
         if (node.canMoveUp()) {
             node.moveUp();
             GraphCoordinates coin = node.getCoinUp();
             boolean collectedCoin = collectCoin(graph, coin);
             path.set(currentDepth, 'U');
-            int depth = doFindLongestPath(graph, node.getUp(), maxDepthSoFar, currentDepth + 1, path, result);
+            int depth = doFindLongestPath(node.getUp(), currentDepth + 1, path);
             if (collectedCoin) undoCollectCoin(graph, coin);
             node.undoMoveUp();
             if (depth > maxDepthSoFar) {
                 maxDepthSoFar = depth;
+            }
+            if (currentlyUnsolvable) {
+                currentlyUnsolvable = puzzleUnsolvableChecker.isPuzzleUnsolvable(graph, node);
+                if (currentlyUnsolvable) {
+                    return maxDepthSoFar;
+                }
             }
         }
         if (node.canMoveRight()) {
@@ -56,11 +80,17 @@ public class SearchEngine {
             GraphCoordinates coin = node.getCoinRight();
             boolean collectedCoin = collectCoin(graph, coin);
             path.set(currentDepth, 'R');
-            int depth = doFindLongestPath(graph, node.getRight(), maxDepthSoFar, currentDepth + 1, path, result);
+            int depth = doFindLongestPath(node.getRight(), currentDepth + 1, path);
             if (collectedCoin) undoCollectCoin(graph, coin);
             node.undoMoveRight();
             if (depth > maxDepthSoFar) {
                 maxDepthSoFar = depth;
+            }
+            if (currentlyUnsolvable) {
+                currentlyUnsolvable = puzzleUnsolvableChecker.isPuzzleUnsolvable(graph, node);
+                if (currentlyUnsolvable) {
+                    return maxDepthSoFar;
+                }
             }
         }
         if (node.canMoveDown()) {
@@ -68,11 +98,17 @@ public class SearchEngine {
             GraphCoordinates coin = node.getCoinDown();
             boolean collectedCoin = collectCoin(graph, coin);
             path.set(currentDepth, 'D');
-            int depth = doFindLongestPath(graph, node.getDown(), maxDepthSoFar, currentDepth + 1, path, result);
+            int depth = doFindLongestPath(node.getDown(), currentDepth + 1, path);
             if (collectedCoin) undoCollectCoin(graph, coin);
             node.undoMoveDown();
             if (depth > maxDepthSoFar) {
                 maxDepthSoFar = depth;
+            }
+            if (currentlyUnsolvable) {
+                currentlyUnsolvable = puzzleUnsolvableChecker.isPuzzleUnsolvable(graph, node);
+                if (currentlyUnsolvable) {
+                    return maxDepthSoFar;
+                }
             }
         }
         if (node.canMoveLeft()) {
@@ -80,11 +116,17 @@ public class SearchEngine {
             GraphCoordinates coin = node.getCoinLeft();
             boolean collectedCoin = collectCoin(graph, coin);
             path.set(currentDepth, 'L');
-            int depth = doFindLongestPath(graph, node.getLeft(), maxDepthSoFar, currentDepth + 1, path, result);
+            int depth = doFindLongestPath(node.getLeft(), currentDepth + 1, path);
             if (collectedCoin) undoCollectCoin(graph, coin);
             node.undoMoveLeft();
             if (depth > maxDepthSoFar) {
                 maxDepthSoFar = depth;
+            }
+            if (currentlyUnsolvable) {
+                currentlyUnsolvable = puzzleUnsolvableChecker.isPuzzleUnsolvable(graph, node);
+                if (currentlyUnsolvable) {
+                    return maxDepthSoFar;
+                }
             }
         }
         return maxDepthSoFar;

@@ -1,5 +1,6 @@
 package de.famiru.ctriddle.easterchilly.graph;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -54,4 +55,10 @@ public class Graph {
                 .allMatch(Boolean::booleanValue);
     }
 
+    public Collection<GraphCoordinates> findUnvisitedCoins() {
+        return collectedCoins.entrySet().stream()
+                .filter(e -> !e.getValue())
+                .map(Map.Entry::getKey)
+                .toList();
+    }
 }
