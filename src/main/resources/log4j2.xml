@@ -2,7 +2,7 @@
 <Configuration status="error">
     <Appenders>
         <Console name="Console" target="SYSTEM_OUT">
-            <PatternLayout pattern="%m%n"/>
+            <PatternLayout pattern="%d %m%n"/>
         </Console>
     </Appenders>
     <Loggers>
