@@ -22,5 +22,7 @@ Die Spielregeln werden mittels angepasster Factory in der Main-Klasse (`EdgeVisi
 Nachfolgend jeweils eine optimale Lösung:
 
 Rutschpartie 1 (32 Züge): `LULRDRUDULLURLDRLRDUDLDLRURDLRUL`
+
 Rutschpartie 2 (40 Züge): `UDUDLDURLDULDULRDULRURLUDLRDULRULRDRLDRL`
+
 Rutschpartie 3 (83 Züge): `LDURDDULDULRDLURLUDULDLRULDURDLURUDURLRULRLDUDRLRULDRUDRLURLRURLRDURLDRURDRLULDUDRU`
